@@ -2,6 +2,7 @@ return  {
   "hrsh7th/nvim-cmp",
   dependencies = {
     "hrsh7th/cmp-emoji",
+    "hrsh7th/cmp-cmdline",
   },
   ---@param opts cmp.ConfigSchema
   opts = function(_, opts)
@@ -13,6 +14,21 @@ return  {
 
     local luasnip = require("luasnip")
     local cmp = require("cmp")
+
+    cmp.setup.cmdline(':', {
+      mapping = cmp.mapping.preset.cmdline(),
+      sources = cmp.config.sources({
+        { name = 'path' }
+      }, {
+          {
+            name = 'cmdline',
+            option = {
+              ignore_cmds = { 'Man', '!' }
+            }
+          }
+        })
+    })
+
 
     opts.mapping = vim.tbl_extend("force", opts.mapping, {
       ["<Tab>"] = cmp.mapping(function(fallback)
@@ -38,6 +54,7 @@ return  {
         end
       end, { "i", "s" }),
     })
+
   end,
 }
 
